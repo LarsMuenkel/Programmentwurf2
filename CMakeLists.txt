@@ -1,79 +1,79 @@
-# CMake Mindestversion festlegen
+# Set minimum required CMake version
 cmake_minimum_required(VERSION 3.20)
 
-# Projektname und Sprache definieren
+# Define project name and language
 project(DeveloperExercise LANGUAGES CXX)
 
-# C++ Standard auf C++14 setzen
+# Set C++ standard to C++14
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF) # Keine GNU-Erweiterungen verwenden
+set(CMAKE_CXX_EXTENSIONS OFF) # Do not use GNU extensions
 
-# Compiler-Flags setzen (gemäß Vorgabe)
+# Set compiler flags (as specified)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
-# Pfad für Header-Dateien der Bibliothek hinzufügen
+# Add path for library header files
 include_directories(include)
 
-# Definition für den Pfad zu den Logo-Dateien
-# Dieser Pfad wird relativ zum Quellverzeichnis des Projekts sein
-# Angenommen, die Logos befinden sich in einem Ordner "logos" im Projekt-Stammverzeichnis
+# Definition for the path to the logo files
+# This path will be relative to the project's source directory
+# Assume the logos are in a folder "logos" in the project root directory
 set(LOGO_FILES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/logos")
-# Überprüfen, ob der LOGO_PATH als String übergeben wird, ggf. Anführungszeichen hinzufügen
-# Dies ist wichtig, damit der Pfad im C++ Code korrekt als String interpretiert wird.
+# Check if LOGO_PATH is passed as a string, add quotes if necessary
+# This is important so that the path is correctly interpreted as a string in C++ code.
 add_definitions("-DLOGO_PATH=\"${LOGO_FILES_PATH}\"")
 
 
-# Bibliothek "developer_lib" erstellen
-# Sie besteht aus den Klassen Developer, JuniorDeveloper und SeniorDeveloper
+# Create library "developer_lib"
+# It consists of the classes Developer, JuniorDeveloper, and SeniorDeveloper
 add_library(developer_lib
     src/developer.cpp
     src/juniordeveloper.cpp
     src/seniordeveloper.cpp
 )
 
-# Die Header-Dateien der Bibliothek als öffentlich deklarieren
+# Declare the library's header files as public
 target_include_directories(developer_lib PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
-# Hauptanwendung "main_app" erstellen
+# Create main application "main_app"
 add_executable(main_app src/main.cpp)
 
-# Die Hauptanwendung gegen die "developer_lib" linken
+# Link the main application against "developer_lib"
 target_link_libraries(main_app PRIVATE developer_lib)
 
 # --- GoogleTest Integration ---
-# Testingsystem aktivieren
+# Enable testing system
 enable_testing()
 
-# GoogleTest über FetchContent herunterladen und konfigurieren
+# Download and configure GoogleTest via FetchContent
 include(FetchContent)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG main # oder eine spezifische Version wie release-1.14.0
+  GIT_TAG main # or a specific version like release-1.14.0
 )
-# Damit gtest und gtest_main verfügbar sind, aber nicht standardmäßig gebaut werden,
-# wenn sie nicht von einem Test benötigt werden.
+# Make gtest and gtest_main available, but do not build by default
+# unless required by a test.
 FetchContent_MakeAvailable(googletest)
 
-# Test-Executable erstellen
-# Annahme: Die Testdateien befinden sich im Verzeichnis "test"
+# Create test executable
+# Assumption: The test files are located in the "test" directory
 add_executable(run_tests
     test/developer_test.cpp
-    # Fügen Sie hier weitere Testdateien hinzu, falls vorhanden
+    # Add more test files here if available
 )
 
-# Die Test-Executable gegen developer_lib und googletest linken
+# Link the test executable against developer_lib and googletest
 target_link_libraries(run_tests PRIVATE developer_lib gtest_main)
 
-# Die Tests zum CTest-Framework hinzufügen
+# Add the tests to the CTest framework
 include(GoogleTest)
 gtest_discover_tests(run_tests)
 
-# Ausgabe zur Information
+# Output for information
 message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
 message(STATUS "Compiler Flags: ${CMAKE_CXX_FLAGS}")
 message(STATUS "Logo path definition: -DLOGO_PATH=\"${LOGO_FILES_PATH}\"")

@@ -1,21 +1,21 @@
 #include <iostream>
 #include <vector>
-#include <memory> // Für std::shared_ptr und std::make_shared
+#include <memory> // For std::shared_ptr and std::make_shared
 #include "developer.hpp"
 #include "juniordeveloper.hpp"
 #include "seniordeveloper.hpp"
 
 int main() {
-    // 1. Ein Vector von shared_ptr auf Developer-Objekte anlegen.
+    // 1. Create a vector of shared_ptr to Developer objects.
     std::vector<std::shared_ptr<Developer>> developers;
 
-    // 2. Mindestens je ein Objekt der Klassen SeniorDeveloper und JuniorDeveloper instanziieren
-    //    unter Verwendung dynamischer Speicherallokation (std::make_shared).
+    // 2. Instantiate at least one object of the classes SeniorDeveloper and JuniorDeveloper
+    //    using dynamic memory allocation (std::make_shared).
     auto senior_dev = std::make_shared<SeniorDeveloper>("Diana Prince", "Wonder Woman");
     auto junior_dev = std::make_shared<JuniorDeveloper>("Peter Parker", "Spiderman");
 
-    // Optional: Logos laden. Die Dateinamen müssen im "logos" Ordner existieren.
-    // Der Pfad wird durch die Compiler-Definition LOGO_PATH in CMakeLists.txt bestimmt.
+    // Optional: Load logos. The filenames must exist in the "logos" folder.
+    // The path is determined by the compiler definition LOGO_PATH in CMakeLists.txt.
     try {
         senior_dev->load_logo_from_file("wonder_woman_logo.txt");
     } catch (const std::runtime_error& e) {
@@ -27,27 +27,17 @@ int main() {
     } catch (const std::runtime_error& e) {
         std::cerr << "Error loading logo for Junior Developer: " << e.what() << std::endl;
     }
-    
-    // Testfall für ungültigen Dateinamen (optional, zum Demonstrieren der Exception)
-    /*
-    try {
-        auto temp_dev = std::make_shared<JuniorDeveloper>("Test User", "Test Alias");
-        temp_dev->load_logo_from_file("non_existent_logo.txt");
-    } catch (const std::runtime_error& e) {
-        std::cerr << "Caught expected error: " << e.what() << std::endl;
-    }
-    */
 
 
-    // 3. Alle angelegten Developer-Objekte dem Vector hinzufügen.
+    // 3. Add all created Developer objects to the vector.
     developers.push_back(senior_dev);
     developers.push_back(junior_dev);
 
-    // 4. Unter Verwendung einer Schleife und eines Iterators über den Vector gehen,
-    //    um die Developer des Vectors ein "Problem lösen" zu lassen.
+    // 4. Use a loop and an iterator to iterate over the vector,
+    //    letting each Developer in the vector "solve a problem".
     for (auto it = developers.begin(); it != developers.end(); ++it) {
-        (*it)->solve_problem(); // Polymorpher Aufruf von solve_problem()
-        if (std::next(it) != developers.end()) { // Fügt eine Leerzeile zwischen den Ausgaben hinzu, außer nach dem letzten Element
+        (*it)->solve_problem(); // Polymorphic call of solve_problem()
+        if (std::next(it) != developers.end()) { // Adds a blank line between outputs, except after the last element
             std::cout << std::endl;
         }
     }
