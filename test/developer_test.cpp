@@ -2,70 +2,70 @@
 #include "developer.hpp"
 #include "juniordeveloper.hpp"
 #include "seniordeveloper.hpp"
-#include <fstream> // Für das Erstellen von Test-Logo-Dateien
+#include <fstream> // For creating test logo files
 #include <string>
 #include <vector>
 
-// Hilfsfunktion zum Erstellen einer temporären Logodatei für Tests
-// Gibt den vollständigen Pfad zur erstellten Datei zurück
+// Helper function to create a temporary logo file for tests
+// Returns the full path to the created file
 std::string create_test_logo_file(const std::string& filename, const std::string& content) {
-    // LOGO_PATH wird durch die CMake-Definition bereitgestellt
+    // LOGO_PATH is provided through the CMake definition
     std::string full_path = std::string(LOGO_PATH) + "/" + filename;
     std::ofstream outfile(full_path);
     if (outfile.is_open()) {
         outfile << content;
         outfile.close();
     } else {
-        // Im Fehlerfall einen leeren String zurückgeben oder eine Ausnahme werfen,
-        // aber für Tests ist es oft besser, wenn der Test fehlschlägt, weil die Datei nicht erstellt wurde.
+        // In case of an error, return an empty string or throw an exception,
+        // but for tests, it is often better if the test fails because the file was not created.
         throw std::runtime_error("Failed to create test logo file: " + full_path);
     }
-    return full_path; // Obwohl wir im Test nur den Dateinamen verwenden
+    return full_path; // Although we only use the filename in the test
 }
 
-// Hilfsfunktion zum Löschen einer temporären Logodatei
+// Helper function to delete a temporary logo file
 void remove_test_logo_file(const std::string& filename) {
     std::string full_path = std::string(LOGO_PATH) + "/" + filename;
     std::remove(full_path.c_str());
 }
 
-// Testfixture für Developer-Tests
+// Test fixture for Developer tests
 class DeveloperTest : public ::testing::Test {
 protected:
-    // Hier können SetUp- und TearDown-Methoden definiert werden, falls benötigt.
+    // SetUp and TearDown methods can be defined here if needed.
     // void SetUp() override {}
     // void TearDown() override {}
 
-    // Test-Logo-Dateinamen
+    // Test logo filenames
     const std::string correct_logo_filename = "test_logo_correct.txt";
-    const std::string empty_logo_filename = "test_logo_empty.txt"; // Eine leere Datei
-    const std::string invalid_logo_filename = "non_existent_logo.txt"; // Eine nicht existierende Datei
+    const std::string empty_logo_filename = "test_logo_empty.txt"; // An empty file
+    const std::string invalid_logo_filename = "non_existent_logo.txt"; // A non-existent file
 
     const std::string logo_content_correct = "<test_logo>\nline2\nline3";
     const std::string logo_content_empty = "";
 
 
     void SetUp() override {
-        // Erstelle die Test-Logo-Dateien vor jedem Test der load_logo_from_file Methode
-        // (oder zumindest vor den Tests, die sie benötigen)
+        // Create the test logo files before each test of the load_logo_from_file method
+        // (or at least before the tests that need them)
         try {
             create_test_logo_file(correct_logo_filename, logo_content_correct);
             create_test_logo_file(empty_logo_filename, logo_content_empty);
         } catch (const std::runtime_error& e) {
-            // Wenn das Erstellen der Datei fehlschlägt, den Test fehlschlagen lassen.
+            // If creating the file fails, let the test fail.
             FAIL() << "Setup failed to create test logo files: " << e.what();
         }
     }
 
     void TearDown() override {
-        // Entferne die Test-Logo-Dateien nach jedem Test
+        // Remove the test logo files after each test
         remove_test_logo_file(correct_logo_filename);
         remove_test_logo_file(empty_logo_filename);
-        // non_existent_logo.txt muss nicht entfernt werden, da es nicht erstellt wird.
+        // non_existent_logo.txt does not need to be removed as it is not created.
     }
 };
 
-// Testet den Konstruktor und die Getter für JuniorDeveloper
+// Tests the constructor and getters for JuniorDeveloper
 TEST_F(DeveloperTest, JuniorDeveloperConstructorAndGetters) {
     const std::string name = "Johnny Junior";
     const std::string alias = "JJ";
@@ -73,10 +73,10 @@ TEST_F(DeveloperTest, JuniorDeveloperConstructorAndGetters) {
 
     EXPECT_EQ(jd.get_name(), name);
     EXPECT_EQ(jd.get_alias(), alias);
-    EXPECT_EQ(jd.get_logo(), ""); // Logo sollte initial leer sein
+    EXPECT_EQ(jd.get_logo(), ""); // Logo should be empty initially
 }
 
-// Testet den Konstruktor und die Getter für SeniorDeveloper
+// Tests the constructor and getters for SeniorDeveloper
 TEST_F(DeveloperTest, SeniorDeveloperConstructorAndGetters) {
     const std::string name = "Sarah Senior";
     const std::string alias = "SS";
@@ -84,24 +84,24 @@ TEST_F(DeveloperTest, SeniorDeveloperConstructorAndGetters) {
 
     EXPECT_EQ(sd.get_name(), name);
     EXPECT_EQ(sd.get_alias(), alias);
-    EXPECT_EQ(sd.get_logo(), ""); // Logo sollte initial leer sein
+    EXPECT_EQ(sd.get_logo(), ""); // Logo should be empty initially
 }
 
-// Testet load_logo_from_file: Logo ist leer vor dem Aufruf
+// Tests load_logo_from_file: Logo is empty before the call
 TEST_F(DeveloperTest, LoadLogoFromFile_LogoEmptyBeforeLoad) {
     JuniorDeveloper dev("Test Dev", "TD");
-    EXPECT_EQ(dev.get_logo(), ""); // Sicherstellen, dass das Logo vor dem Laden leer ist
+    EXPECT_EQ(dev.get_logo(), ""); // Ensure the logo is empty before loading
 }
 
-// Testet load_logo_from_file: Korrektes Logo wird nach dem Laden geladen
+// Tests load_logo_from_file: Correct logo is loaded after loading
 TEST_F(DeveloperTest, LoadLogoFromFile_CorrectLogoLoaded) {
     JuniorDeveloper dev("Test Dev", "TD");
-    // Die Datei test_logo_correct.txt wird im SetUp erstellt
+    // The file test_logo_correct.txt is created in SetUp
     dev.load_logo_from_file(correct_logo_filename);
     EXPECT_EQ(dev.get_logo(), logo_content_correct);
 }
 
-// Testet load_logo_from_file: Korrektes Logo wird nach dem Laden geladen (mit SeniorDeveloper)
+// Tests load_logo_from_file: Correct logo is loaded after loading (with SeniorDeveloper)
 TEST_F(DeveloperTest, LoadLogoFromFile_CorrectLogoLoadedSenior) {
     SeniorDeveloper dev("Test Senior Dev", "TSD");
     dev.load_logo_from_file(correct_logo_filename);
@@ -109,27 +109,27 @@ TEST_F(DeveloperTest, LoadLogoFromFile_CorrectLogoLoadedSenior) {
 }
 
 
-// Testet load_logo_from_file: Leere Datei führt zu leerem Logo-String
+// Tests load_logo_from_file: Empty file leads to empty logo string
 TEST_F(DeveloperTest, LoadLogoFromFile_EmptyFileLeadsToEmptyLogo) {
     JuniorDeveloper dev("Test Dev", "TD");
-    // Die Datei test_logo_empty.txt wird im SetUp erstellt
+    // The file test_logo_empty.txt is created in SetUp
     dev.load_logo_from_file(empty_logo_filename);
     EXPECT_EQ(dev.get_logo(), logo_content_empty);
 }
 
-// Testet load_logo_from_file: Exception wird bei ungültigem Dateinamen geworfen
+// Tests load_logo_from_file: Exception is thrown on invalid filename
 TEST_F(DeveloperTest, LoadLogoFromFile_ThrowsExceptionOnInvalidFilename) {
     JuniorDeveloper dev("Test Dev", "TD");
-    // non_existent_logo.txt existiert nicht
+    // non_existent_logo.txt does not exist
     EXPECT_THROW(dev.load_logo_from_file(invalid_logo_filename), std::runtime_error);
 }
 
-// Test für die solve_problem Methode (einfacher Test, um zu prüfen, ob sie ohne Fehler läuft)
-// Eine genauere Prüfung der Ausgabe wäre komplexer und könnte Output-Capturing erfordern.
+// Test for the solve_problem method (simple test to check if it runs without errors)
+// A more detailed check of the output would be more complex and might require output capturing.
 TEST_F(DeveloperTest, JuniorDeveloperSolveProblem) {
     JuniorDeveloper jd("Junior Test", "JT");
-    // Um die Ausgabe zu testen, müsste man std::cout umleiten.
-    // Hier testen wir nur, dass die Methode ohne Exceptions durchläuft.
+    // To test the output, one would need to redirect std::cout.
+    // Here we only test that the method runs without exceptions.
     EXPECT_NO_THROW(jd.solve_problem());
 }
 
@@ -138,6 +138,6 @@ TEST_F(DeveloperTest, SeniorDeveloperSolveProblem) {
     EXPECT_NO_THROW(sd.solve_problem());
 }
 
-// Hauptfunktion für die Tests wird von gtest_main bereitgestellt,
-// daher ist keine main() Funktion in dieser Datei erforderlich,
-// wenn wir gegen gtest_main linken.
+// Main function for the tests is provided by gtest_main,
+// so no main() function is required in this file,
+// if we link against gtest_main.
