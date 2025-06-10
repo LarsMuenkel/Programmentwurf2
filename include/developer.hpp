@@ -1,43 +1,43 @@
-#ifndef DEVELOPER_HPP
-#define DEVELOPER_HPP
+#ifndef DEVELOPER_HPP_grtjkösfsghfg
+#define DEVELOPER_HPP_grtjkösfsghfg
 
 #include <string>
 #include <iostream>
-#include <fstream> // Für Dateizugriff in load_logo_from_file
-#include <stdexcept> // Für std::runtime_error
-#include <vector>    // Wird für das Einlesen des Logos benötigt
+#include <fstream> // For file access in load_logo_from_file
+#include <stdexcept> // For std::runtime_error
+#include <vector>    // Needed for reading the logo
 
-// Die Klasse Developer dient als Basisklasse für JuniorDeveloper und SeniorDeveloper.
+// The Developer class serves as a base class for JuniorDeveloper and SeniorDeveloper.
 class Developer {
 protected:
-    std::string name;         // Name des Entwicklers
-    std::string alias;        // Alias-Name des Entwicklers
-    std::string logo;         // Logo des Entwicklers (kann mehrzeilig sein)
+    std::string name;         // Name of the developer
+    std::string alias;        // Alias name of the developer
+    std::string logo;         // Logo of the developer (can be multiline)
 
 public:
-    // Konstruktor zur Initialisierung von Name und Alias.
-    // Das Logo ist nicht Teil des Konstruktors.
+    // Constructor to initialize name and alias.
+    // The logo is not part of the constructor.
     Developer(const std::string& name, const std::string& alias);
 
-    // Virtueller Destruktor, wichtig für Basisklassen mit virtuellen Methoden.
+    // Virtual destructor, important for base classes with virtual methods.
     virtual ~Developer() = default;
 
-    // Statische Methode, die ausgibt, dass Kaffee getrunken wurde.
+    // Static method that outputs that coffee was drunk.
     static void drink_coffee();
 
-    // Nicht-virtuelle Methode zum Laden eines Logos aus einer Datei.
-    // Wirft eine std::runtime_error, wenn der Dateiname ungültig ist oder die Datei nicht geöffnet werden kann.
+    // Non-virtual method for loading a logo from a file.
+    // Throws std::runtime_error if the filename is invalid or the file cannot be opened.
     void load_logo_from_file(const std::string& filename);
 
-    // Getter-Methoden für alle Membervariablen.
+    // Getter methods for all member variables.
     const std::string& get_name() const;
     const std::string& get_alias() const;
     const std::string& get_logo() const;
 
-    // Rein virtuelle Methode "solve_problem", die in abgeleiteten Klassen implementiert werden muss.
+    // Pure virtual method "solve_problem", which must be implemented in derived classes.
     virtual void solve_problem() = 0;
 
-    // Freund-Funktion zur Überladung des Stream-Operators (<<) für std::cout.
+    // Friend function for overloading the stream operator (<<) for std::cout.
     friend std::ostream& operator<<(std::ostream& os, const Developer& dev);
 };
 
