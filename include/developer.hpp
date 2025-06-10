@@ -1,5 +1,5 @@
-#ifndef DEVELOPER_HPP
-#define DEVELOPER_HPP
+#ifndef DEVELOPER_HPP_grtjkösfsghfg
+#define DEVELOPER_HPP_grtjkösfsghfg
 
 #include <string>
 #include <iostream>

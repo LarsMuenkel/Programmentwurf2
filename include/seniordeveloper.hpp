@@ -1,5 +1,5 @@
-#ifndef SENIORDEVELOPER_HPP
-#define SENIORDEVELOPER_HPP
+#ifndef SENIORDEVELOPER_HPP_grtjkösfsghfg
+#define SENIORDEVELOPER_HPP_grtjkösfsghfg
 
 #include "developer.hpp" // Include base class Developer
 
