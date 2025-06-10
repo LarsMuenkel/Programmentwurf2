@@ -1,15 +1,15 @@
 #ifndef JUNIORDEVELOPER_HPP
 #define JUNIORDEVELOPER_HPP
 
-#include "developer.hpp" // Basisklasse Developer einbinden
+#include "developer.hpp" // Include base class Developer
 
-// Die Klasse JuniorDeveloper ist von Developer abgeleitet.
+// The JuniorDeveloper class is derived from Developer.
 class JuniorDeveloper : public Developer {
 public:
-    // Konstruktor, der den Konstruktor der Basisklasse aufruft.
+    // Constructor that calls the base class constructor.
     JuniorDeveloper(const std::string& name, const std::string& alias);
 
-    // Überschreiben der rein virtuellen Methode solve_problem.
+    // Override of the pure virtual method solve_problem.
     void solve_problem() override;
 };
 
