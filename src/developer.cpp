@@ -1,26 +1,26 @@
 #include "developer.hpp"
 
-// Implementierung des Konstruktors
+// Implementation of the constructor
 Developer::Developer(const std::string& name, const std::string& alias)
     : name(name), alias(alias) {}
 
 
-// Implementierung der statischen Methode drink_coffee
+// Implementation of the static method drink_coffee
 void Developer::drink_coffee() {
     std::cout << "Ahhhh, I needed that coffee!!!" << std::endl;
 }
 
-// Implementierung der Methode load_logo_from_file
+// Implementation of the method load_logo_from_file
 void Developer::load_logo_from_file(const std::string& filename) {
-    // Der LOGO_PATH wird durch die Compiler-Definition in CMakeLists.txt bereitgestellt.
-    // Es ist wichtig sicherzustellen, dass LOGO_PATH korrekt definiert ist.
-    // Wenn LOGO_PATH nicht definiert ist, wird dies zu einem Compiler-Fehler führen.
-    // Der Makro-Name LOGO_PATH wird hier direkt verwendet.
+    // The LOGO_PATH is provided through the compiler definition in CMakeLists.txt.
+    // It is important to ensure that LOGO_PATH is correctly defined.
+    // If LOGO_PATH is not defined, this will result in a compiler error.
+    // The macro name LOGO_PATH is used directly here.
     std::string full_path = std::string(LOGO_PATH) + "/" + filename;
     
     std::ifstream logo_file(full_path);
     if (!logo_file.is_open()) {
-        // Fehler, wenn die Datei nicht geöffnet werden kann.
+        // Error if the file cannot be opened.
         throw std::runtime_error("Error: Could not open logo file: " + full_path);
     }
 
@@ -31,26 +31,26 @@ void Developer::load_logo_from_file(const std::string& filename) {
     }
     logo_file.close();
 
-    // Das Logo als einzelner String mit Zeilenumbrüchen speichern
-    this->logo = ""; // Altes Logo löschen
+    // Save the logo as a single string with line breaks
+    this->logo = ""; // Clear the old logo
     for (size_t i = 0; i < logo_lines.size(); ++i) {
         this->logo += logo_lines[i];
         if (i < logo_lines.size() - 1) {
-            this->logo += "\n"; // Zeilenumbruch hinzufügen, außer bei der letzten Zeile
+            this->logo += "\n"; // Add line break, except for the last line
         }
     }
 
     if (this->logo.empty() && !logo_lines.empty()) {
-        // Fallback, falls das Logo leer ist, aber Zeilen gelesen wurden (z.B. nur Leerzeilen)
-        // In diesem Fall könnte man entscheiden, das Logo als "leer" zu betrachten oder
-        // die gelesenen Leerzeilen zu behalten. Hier behalten wir es.
+        // Fallback if the logo is empty but lines were read (e.g., only blank lines)
+        // In this case, one could decide to consider the logo as "empty" or
+        // keep the read blank lines. Here we keep it.
     } else if (logo_lines.empty()) {
-        // Wenn die Datei leer war, bleibt das Logo ein leerer String.
-        // Man könnte hier auch eine Warnung ausgeben oder einen Fehler werfen, je nach Anforderung.
+        // If the file was empty, the logo remains an empty string.
+        // One could also issue a warning or throw an error here, depending on the requirement.
     }
 }
 
-// Implementierung der Getter-Methoden
+// Implementation of the getter methods
 const std::string& Developer::get_name() const {
     return this->name;
 }
@@ -63,13 +63,13 @@ const std::string& Developer::get_logo() const {
     return this->logo;
 }
 
-// Implementierung des überladenen Stream-Operators
+// Implementation of the overloaded stream operator
 std::ostream& operator<<(std::ostream& os, const Developer& dev) {
-    // Wenn ein Logo geladen wurde, wird es zuerst ausgegeben.
+    // If a logo has been loaded, it is output first.
     if (!dev.get_logo().empty()) {
         os << dev.get_logo() << std::endl;
     }
     os << "Name: " << dev.get_name() << std::endl;
-    os << "Alias: " << dev.get_alias(); // Kein std::endl hier, damit es in solve_problem passt
+    os << "Alias: " << dev.get_alias(); // No std::endl here, so it fits in solve_problem
     return os;
 }

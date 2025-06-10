@@ -1,20 +1,20 @@
 #include "seniordeveloper.hpp"
-#include <iostream> // Für std::cout
+#include <iostream> // For std::cout
 
-// Implementierung des Konstruktors.
-// Ruft den Konstruktor der Basisklasse Developer auf.
+// Implementation of the constructor.
+// Calls the constructor of the base class Developer.
 SeniorDeveloper::SeniorDeveloper(const std::string& name, const std::string& alias)
     : Developer(name, alias) {
-    // Keine zusätzliche Initialisierung im SeniorDeveloper Konstruktor notwendig.
+    // No additional initialization is required in the SeniorDeveloper constructor.
 }
 
-// Implementierung der Methode solve_problem für SeniorDeveloper.
+// Implementation of the method solve_problem for SeniorDeveloper.
 void SeniorDeveloper::solve_problem() {
     std::cout << "Solving a problem:" << std::endl;
-    // Den überladenen Stream-Operator der Basisklasse verwenden, um Name, Alias und Logo auszugeben.
+    // Use the overloaded stream operator of the base class to output name, alias, and logo.
     std::cout << *this << std::endl; 
-    std::cout << "Ha, that was EZ!" << std::endl; // Spezifische Nachricht für SeniorDeveloper
+    std::cout << "Ha, that was EZ!" << std::endl; // Specific message for SeniorDeveloper
     
-    // Die statische Methode drink_coffee der Basisklasse aufrufen.
+    // Call the static method drink_coffee of the base class.
     Developer::drink_coffee();
 }
