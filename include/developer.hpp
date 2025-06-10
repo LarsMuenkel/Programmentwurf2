@@ -1,22 +1,22 @@
 #ifndef DEVELOPER_HPP_grtjkösfsghfg
 #define DEVELOPER_HPP_grtjkösfsghfg
 
-#include <string>
+#include <fstream>  // For file access in load_logo_from_file
 #include <iostream>
-#include <fstream> // For file access in load_logo_from_file
-#include <stdexcept> // For std::runtime_error
-#include <vector>    // Needed for reading the logo
+#include <stdexcept>  // For std::runtime_error
+#include <string>
+#include <vector>  // Needed for reading the logo
 
 // The Developer class serves as a base class for JuniorDeveloper and SeniorDeveloper.
-class Developer {
-protected:
-    std::string name;         // Name of the developer
-    std::string alias;        // Alias name of the developer
-    std::string logo;         // Logo of the developer (can be multiline)
+class Developer
+{
+   protected:
+    std::string name;   // Name of the developer
+    std::string alias;  // Alias name of the developer
+    std::string logo;   // Logo of the developer (can be multiline)
 
-public:
+   public:
     // Constructor to initialize name and alias.
-    // The logo is not part of the constructor.
     Developer(const std::string& name, const std::string& alias);
 
     // Virtual destructor, important for base classes with virtual methods.
@@ -26,7 +26,6 @@ public:
     static void drink_coffee();
 
     // Non-virtual method for loading a logo from a file.
-    // Throws std::runtime_error if the filename is invalid or the file cannot be opened.
     void load_logo_from_file(const std::string& filename);
 
     // Getter methods for all member variables.
@@ -41,4 +40,4 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Developer& dev);
 };
 
-#endif // DEVELOPER_HPP
+#endif  // DEVELOPER_HPP

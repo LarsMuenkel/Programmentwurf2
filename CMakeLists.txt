@@ -9,21 +9,15 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF) # Do not use GNU extensions
 
-# add some compile options
-add_compile_options(-Wall -Wextra -pedantic -O0)
-
-# Set compiler flags (as specified)
+# Set compiler flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
 # Add path for library header files
 include_directories(include)
 
 # Definition for the path to the logo files
-# This path will be relative to the project's source directory
-# Assume the logos are in a folder "logos" in the project root directory
 set(LOGO_FILES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/logos")
 # Check if LOGO_PATH is passed as a string, add quotes if necessary
-# This is important so that the path is correctly interpreted as a string in C++ code.
 add_definitions("-DLOGO_PATH=\"${LOGO_FILES_PATH}\"")
 
 
@@ -66,7 +60,6 @@ FetchContent_MakeAvailable(googletest)
 # Assumption: The test files are located in the "test" directory
 add_executable(run_tests
     test/developer_test.cpp
-    # Add more test files here if available
 )
 
 # Link the test executable against developer_lib and googletest

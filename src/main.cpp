@@ -1,11 +1,13 @@
 #include <iostream>
+#include <memory>  // For std::shared_ptr and std::make_shared
 #include <vector>
-#include <memory> // For std::shared_ptr and std::make_shared
+
 #include "developer.hpp"
 #include "juniordeveloper.hpp"
 #include "seniordeveloper.hpp"
 
-int main() {
+int main()
+{
     // 1. Create a vector of shared_ptr to Developer objects.
     std::vector<std::shared_ptr<Developer>> developers;
 
@@ -14,20 +16,23 @@ int main() {
     auto senior_dev = std::make_shared<SeniorDeveloper>("Diana Prince", "Wonder Woman");
     auto junior_dev = std::make_shared<JuniorDeveloper>("Peter Parker", "Spiderman");
 
-    // Optional: Load logos. The filenames must exist in the "logos" folder.
-    // The path is determined by the compiler definition LOGO_PATH in CMakeLists.txt.
-    try {
+    try
+    {
         senior_dev->load_logo_from_file("wonder_woman_logo.txt");
-    } catch (const std::runtime_error& e) {
+    }
+    catch (const std::runtime_error& e)
+    {
         std::cerr << "Error loading logo for Senior Developer: " << e.what() << std::endl;
     }
 
-    try {
+    try
+    {
         junior_dev->load_logo_from_file("spiderman_logo.txt");
-    } catch (const std::runtime_error& e) {
+    }
+    catch (const std::runtime_error& e)
+    {
         std::cerr << "Error loading logo for Junior Developer: " << e.what() << std::endl;
     }
-
 
     // 3. Add all created Developer objects to the vector.
     developers.push_back(senior_dev);
@@ -35,9 +40,11 @@ int main() {
 
     // 4. Use a loop and an iterator to iterate over the vector,
     //    letting each Developer in the vector "solve a problem".
-    for (auto it = developers.begin(); it != developers.end(); ++it) {
-        (*it)->solve_problem(); // Polymorphic call of solve_problem()
-        if (std::next(it) != developers.end()) { // Adds a blank line between outputs, except after the last element
+    for (auto it = developers.begin(); it != developers.end(); ++it)
+    {
+        (*it)->solve_problem();  // Polymorphic call of solve_problem()
+        if (std::next(it) != developers.end())
+        {  // Adds a blank line between outputs, except after the last element
             std::cout << std::endl;
         }
     }
