@@ -9,6 +9,9 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF) # Do not use GNU extensions
 
+# add some compile options
+add_compile_options(-Wall -Wextra -pedantic -O0)
+
 # Set compiler flags (as specified)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
