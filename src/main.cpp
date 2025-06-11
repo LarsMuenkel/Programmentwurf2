@@ -13,12 +13,12 @@ int main()
 
     // 2. Instantiate at least one object of the classes SeniorDeveloper and JuniorDeveloper
     //    using dynamic memory allocation (std::make_shared).
-    auto senior_dev = std::make_shared<SeniorDeveloper>("Diana Prince", "Wonder Woman");
+    auto senior_dev = std::make_shared<SeniorDeveloper>("Tony Stark", "Iron Man");
     auto junior_dev = std::make_shared<JuniorDeveloper>("Peter Parker", "Spiderman");
 
     try
     {
-        senior_dev->load_logo_from_file("wonder_woman_logo.txt");
+        senior_dev->load_logo_from_file("iron_man_logo.txt");
     }
     catch (const std::runtime_error& e)
     {
